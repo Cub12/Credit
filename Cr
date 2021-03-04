@@ -1,0 +1,55 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <math.h>
+
+int main(void)
+{
+    long credit;
+    do
+    {
+        credit = get_long("Number of card:\n");
+    }
+    while (credit < 0);
+    long number = credit;
+    int digits;
+    for (digits = 0; number > 0; digits++)
+    {
+        number /= 10;
+    }
+    int checksum = 0;
+    int i;
+    for (i = 0; number > 0; i++, number /= 10)
+    {
+        if (i % 2 == 0)
+        {
+            checksum += (number % 10);
+        }
+        else
+        {
+            int n = (number % 10) * 2;
+            if (n > 9)
+            {
+                n = (n / 10) + (n % 10);
+            }
+            checksum += n;
+        }
+    }
+    checksum = checksum % 10;
+    
+    if ((checksum == 0) && ((credit >= 34e13 && credit < 35e13) || (credit >= 37e13 && credit < 38e13)))
+    {
+        printf("AMEX\n");
+    }
+    else if ((checksum == 0) && (credit >= 51e14 && credit < 56e14))
+    {
+        printf("MASTERCARD\n");
+    }
+    else if (((credit >= 4e12 && credit < 5e12) || (credit >= 4e15 && credit < 5e15)) && (checksum == 0))
+    {
+        printf("VISA\n");
+    }
+    else
+    {
+        printf("INVALID\n");
+    }
+}
